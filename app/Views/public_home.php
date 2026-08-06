@@ -69,7 +69,7 @@
 
         <!-- Pagination -->
         <div class="col-12 d-flex justify-content-center mt-5">
-            <?= $pager->links('default', 'default') ?>
+            <?= $pager->links('default', 'bootstrap5') ?>
         </div>
     <?php endif; ?>
 </div>

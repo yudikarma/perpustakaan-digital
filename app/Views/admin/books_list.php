@@ -83,7 +83,7 @@
 
             <!-- Pagination -->
             <div class="d-flex justify-content-center mt-4">
-                <?= $pager->links('default', 'default') ?>
+                <?= $pager->links('default', 'bootstrap5') ?>
             </div>
         <?php endif; ?>
     </div>
