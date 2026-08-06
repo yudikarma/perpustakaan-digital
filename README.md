@@ -1,69 +1,77 @@
-# CodeIgniter 4 Application Starter
+# Tugas Perpustakaan Buku Digital - Pemrograman Web II
 
-## What is CodeIgniter?
+## Informasi Mahasiswa & Kelas
+* **Nama Mahasiswa** : YUDI KARMA
+* **NIM**            : 250401020118
+* **Mata Kuliah**    : Pemrograman Web II
+* **Kelas**          : IF405
+* **Kode Kelas**     : IF405
+* **Dosen Pengajar** : Alun Sujjada, S.Kom., M.T
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+---
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Deskripsi Aplikasi: Perpustakaan Buku Digital
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+Aplikasi web Perpustakaan Buku Digital ini dibangun menggunakan framework **CodeIgniter 4** dengan database relational. Aplikasi ini mengintegrasikan seluruh fitur yang disyaratkan dalam soal tugas proyek.
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+### Fitur Utama Aplikasi
+1. **Create, Read, Update, Delete (CRUD)**:
+   - Manajemen katalog buku lengkap bagi Administrator.
+   - Mendukung upload file gambar untuk cover buku (disimpan di `public/uploads/covers/`).
+   - Sistem auto-cleanup: menghapus cover lama secara otomatis jika buku dihapus atau diperbarui dengan cover baru.
+2. **Penanganan Session (Autentikasi & Otorisasi)**:
+   - Login halaman khusus admin dengan verifikasi password terenkripsi (`password_verify`).
+   - Pembatasan akses: Pengunjung publik hanya dapat mencari dan membaca buku, sedangkan fitur CRUD (tambah, edit, hapus) dilindungi pengecekan session admin (`session()->has('user_id')`).
+   - Fungsi logout untuk menghancurkan session dengan aman.
+3. **Searching & Pagination**:
+   - Kolom pencarian buku dinamis di portal publik dan dashboard admin. Pencarian mencakup kata kunci pada Judul, Penulis, Kategori, atau ISBN.
+   - Paginasi data menggunakan library `Pager` bawaan CodeIgniter 4 untuk merender buku secara bertahap (6 buku per halaman di portal publik, 10 buku di tabel admin) tanpa membebani memori server.
+4. **User Experience & Notifikasi**:
+   - Integrasi **SweetAlert2** untuk notifikasi aksi sukses/gagal secara modern.
+   - Dialog konfirmasi interaktif sebelum menghapus data untuk mencegah kesalahan klik.
 
-## Installation & updates
+---
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## Konfigurasi Aplikasi & Database
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+* **URL Lokal**: `http://localhost:8080`
+* **Pilihan Database**:
+  1. **SQLite (Default / Siap Pakai)**:
+     Aplikasi telah terkonfigurasi menggunakan SQLite (`writable/database.db`) secara out-of-the-box agar dapat langsung dijalankan tanpa menyalakan MySQL.
+  2. **MySQL (XAMPP)**:
+     - Nama Database: `perpustakaan_digital`
+     - Gunakan file dump SQL yang disertakan: `database.sql` dan import ke phpMyAdmin Anda.
+     - Ubah konfigurasi database di file `.env` ke:
+       ```env
+       database.default.DBDriver = MySQLi
+       database.default.database = perpustakaan_digital
+       database.default.username = root
+       database.default.password = 
+       database.default.hostname = localhost
+       database.default.port = 3306
+       ```
 
-## Setup
+---
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+## Langkah Menjalankan Aplikasi Secara Lokal
 
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Server Requirements
-
-PHP version 8.2 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+1. **Persiapan Dependensi**:
+   Buka terminal di folder `perpustakaan-digital` dan jalankan:
+   ```bash
+   composer install
+   ```
+2. **Migrasi dan Seed Data**:
+   Jalankan perintah berikut untuk menginisialisasi database dan memasukkan akun admin bawaan beserta contoh buku:
+   ```bash
+   php spark migrate
+   php spark db:seed DatabaseSeeder
+   ```
+   *Akun Admin Bawaan:*
+   * **Username**: `admin`
+   * **Password**: `adminpassword`
+3. **Mulai Server Lokal**:
+   Jalankan server CodeIgniter:
+   ```bash
+   php spark serve
+   ```
+   Buka browser dan akses [http://localhost:8080](http://localhost:8080).
